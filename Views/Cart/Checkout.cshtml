@@ -1,0 +1,52 @@
+﻿@model AcePalace.Models.DTO.CheckoutModel 
+@{
+    ViewData["Title"] = "Checkout";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Shedule.SheduleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Shedule.Trener)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Shedule.DateTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Shedules)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SheduleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Trener)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime, "{0:dd/MM/yyyy}")
+                </td>              
+            </tr>
+        }
+    </tbody>
+</table>
+    <h3>Оформление заказа</h3>
+    <form asp-action="Checkout">                  
+            <div class="py-2">
+                <label asp-for="Email">Email*</label>
+                <input type="text" class="form-control" asp-for="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
+    </div>
+    <div class="py-2">
+        <button type="submit" c class="btn btn-info">Завершить заказ</button>
+        </div>
+    </form>

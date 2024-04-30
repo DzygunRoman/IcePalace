@@ -1,0 +1,72 @@
+﻿@model IEnumerable<AcePalace.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Список услуг</h1>
+
+<p>
+    <a asp-action="Create">Создать новый</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Photo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Slug)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.available)
+            </th>            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.categoryName)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.price)
+            </td>
+            <td>
+                <img src="@Html.DisplayFor(modelItem => item.Photo)" width="100" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slug)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.available)
+            </td>
+           
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ProductID">Изменить</a> |
+                <a asp-action="Details" asp-route-id="@item.ProductID">Детальная информация</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductID">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

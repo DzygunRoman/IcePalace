@@ -1,0 +1,182 @@
+﻿@model AcePalace.Models.DTO.OrderAdminOtchet
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<table class="table">
+    <thead>
+    <th>
+            @Html.DisplayNameFor(model => model.Order.DateTime)
+    </th>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Orders)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime, "{0:dd/MM/yyyy}")
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>*@
+
+
+
+
+
+
+
+
+
+
+
+<div style="width:100%" class="mt-2">
+    <h1>Все заказы</h1>
+    @if (Model != null)
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.OrderDetail.DateTime)</th>
+                    <th>Билет Взрослый</th>
+                    <th>Сумма</th>
+                    <th>Билет Детский</th>
+                    <th>Сумма</th>
+                    <th>Билет Зрительский</th>
+                    <th>Сумма</th>
+                    <th>Коньки женские</th>
+                    <th>Сумма</th>
+                    <th>Коньки мужские</th>
+                    <th>Сумма</th>
+                    <th>Итог</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+
+                @foreach (var order in Model.OrderDetails)
+                {
+                    <tr>
+                        @if (order.DateTime == order.DateTime)
+                        {
+                            <td>@order.DateTime</td>
+                            @foreach (var item in Model.OrderDetails)
+                            {
+                                <td> @item.Quantity</td>
+
+                                <td>@(item.UnitPrice * item.Quantity)</td>
+
+                            }
+                        }
+
+
+                    </tr>
+                    break;
+                }
+
+
+
+
+
+
+
+
+
+
+
+                @*foreach (var order in Model.Orders)
+            {
+            @if (order.OrderDetail != null)
+            {
+            <tr>
+            <td>@order.DateTime</td>
+
+            @foreach (var item in order.OrderDetail)
+            {
+            if ((!(item.Product.Name == "Взрослый")) && (!(item.Product.Name == "Детский")) && (!(item.Product.Name == "Зрительский")) && (!(item.Product.Name == "Женские")) && (!(item.Product.Name == "Мужские")))
+            {
+            continue;
+            }
+
+            if (item.Product.Name == "Взрослый")
+            {
+            <td>@item.Quantity</td>
+            <td> @(item.Product.price * item.Quantity)P</td>
+            }
+
+            if (item.Product.Name == "Детский")
+            {
+            <td>@item.Quantity</td>
+            <td> @(item.Product.price * item.Quantity)P</td>
+            }
+
+            else
+            if (item.Product.Name == "Зрительский")
+            {
+            <td>@item.Quantity</td>
+            <td> @(item.Product.price * item.Quantity)P</td>
+            }
+
+            else
+            if (item.Product.Name == "Женские")
+            {
+            <td>@item.Quantity</td>
+            <td> @(item.Product.price * item.Quantity)P</td>
+            }
+
+            else
+            if (item.Product.Name == "Мужские")
+            {
+            <td>@item.Quantity</td>
+            <td> @(item.Product.price * item.Quantity)P</td>
+            }
+
+            if (!((item.Product.Name == "Взрослый") && (item.Product.Name == "Детский") && (item.Product.Name == "Зрительский") && (item.Product.Name == "Женские") && (item.Product.Name == "Мужские")))
+            {
+            continue;
+            }
+            }
+
+
+            <td>@(order.OrderDetail.Select(item => item.Product.price * item.Quantity).Sum())P</td>
+            </tr>
+            }
+
+            }*@
+
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <h5>Нет заказов</h5>
+    }
+</div>
+@*<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+
+
+            <div class="form-group">
+                <label asp-for="DateTime" class="control-label"></label>
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@
+

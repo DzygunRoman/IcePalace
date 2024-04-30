@@ -1,0 +1,40 @@
+﻿@model IEnumerable<AcePalace.Models.Shedule>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Расписание мероприятий</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SheduleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trener)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SheduleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trener)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>           
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Order>
+@{
+}
+<div style="width:100%" class="mt-2">
+    
+
+    <h4>Мои заказ</h4>
+    @if (Model != null && Model.Count() > 0)
+    {
+        <table class="table table-striped">            
+            @foreach (var order in Model)
+            {                
+                
+                
+                
+                @if (order.OrderDetail != null && order.OrderDetail.Count > 0)
+                {
+                    
+                    <tr>
+                        <td>
+                            <table class="table table-striped">
+                                
+                                <tr>
+                                    <th>Категория</th>
+                                    <th>Услуга</th>
+                                    <th>Фото</th>                                    
+                                    <th>Цена</th>
+                                    <th>Итог</th>
+                                </tr>
+                                @foreach (var item in order.OrderDetail)
+                                {
+                                    <tr>
+                                        <td>@item.Product.Category.categoryName</td>
+                                        <td>@item.Product.Name</td>
+                                        <td>
+                                            @if (string.IsNullOrEmpty(item.Product.Photo))
+                                            {
+                                                <img src="@Html.DisplayFor(modelItem => item.Product.Photo)" width="100" />
+                                            }
+                                            else
+                                            {
+                                                <img src="@item.Product.Photo" style="width:50px;height:50px" />
+                                            }
+                                        </td>                                        
+                                        <td>@item.Product.price X @item.Quantity.ToString("c")</td>
+                                        <td> @(item.Product.price * item.Quantity) P</td>
+                                    </tr>
+                                }
+                               
+                                <tr>
+                                    <td>
+                                        <p>Дата оформления заказа: @order.CreateDate.ToString("dd-MM-yyyy")</p>
+                                        <p>Электронная почта: @order.Email</p>
+                                        <p>Дата посещаемого мероприятия: @order.DateTime.ToString("dd/MM/yyyy/HH/mm")</p>
+                                        <h3>Сумма к оплате: @(order.OrderDetail.Select(item => item.Product.price * item.Quantity).Sum()) P</h3>
+                                    </td>                                    
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                   
+                }
+                
+            }
+        </table>
+
+    }
+    else
+    {
+        <h5>Нет заказов</h5>
+    }
+</div>
+
+
+
+

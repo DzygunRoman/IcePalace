@@ -1,0 +1,62 @@
+﻿@model AcePalace.Models.AllProduct
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Услуги Ледового дворца</h1>
+
+
+
+<div class="w-100 d-flex flex-wrap">
+   
+    @foreach (var item in Model.Products)
+    {       
+        <div class="card mx-3 mt-4 mb-4" style="width: 16rem;">
+            <img style="width:100%" img src="@Html.DisplayFor(modelItem => item.Photo)" width="100" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text"><b>Категория: </b>@Html.DisplayFor(modelItem => item.Category.categoryName)</p>
+                <p class="card-text"><b>Название: </b>@Html.DisplayFor(modelItem => item.Name)</p>
+                <p class="card-text"><b>Цена: </b>@Html.DisplayFor(modelItem => item.price)<b> Р</b></p>
+                <p class="card-text"><b>Описание: </b>@Html.DisplayFor(modelItem => item.Description)</p>
+                <button type="button" onclick="add(@item.ProductID)" class="btn btn-primary">Добавить в корзину</button>
+            </div>
+        </div>
+    }
+    @foreach (var item in Model.Scates)
+    {
+        <div class="card mx-3 mt-4 mb-4" style="width: 16rem;">
+            <img style="width:100%" img src="@Html.DisplayFor(modelItem => item.Photo)" width="100" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text"><b>Категория: </b>@Html.DisplayFor(modelItem => item.Category.categoryName)</p>
+                <p class="card-text"><b>Название: </b>@Html.DisplayFor(modelItem => item.Name)</p>
+                <p class="card-text"><b>Размер: </b>@Html.DisplayFor(modelItem => item.Size)</p>
+                <p class="card-text"><b>Цена: </b>  @Html.DisplayFor(modelItem => item.price)<b> Р</b></p>
+                <p class="card-text"><b>Описание: </b>@Html.DisplayFor(modelItem => item.Description)</p>                
+                <button type="button" onclick="add(@item.ProductID)" class="btn btn-primary">Добавить в корзину</button>
+              
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    <script>
+        async function add(ProductID) {
+            var usernameEl = document.getElementById("user");          
+            try {
+                var response = await fetch(`/Cart/AddItem?ProductID=${ProductID}`);
+                if (response.status == 200) {
+                    var result = await response.json();
+                    var cartCountEl = document.getElementById("cartCount");
+                    cartCountEl.innerHTML = result;
+                    window.location.href = "#cartCount";
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+    </script>
+}
+
+

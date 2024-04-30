@@ -1,0 +1,61 @@
+﻿@model ShoppingCart
+@{
+    ViewData["Title"] = "GetUserCart";
+}
+
+<div style="width:90%;margin:auto" class="mt-2">
+    @if (Model != null && Model.CartDetails != null )
+    {
+        <h5>Моя корзина</h5>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Услуги</th>
+                <th>Фото</th>
+                <th>Категория</th>
+                <th>Цена</th>
+                <th>Сумма</th>
+                <th>Действие</th>
+            </tr>
+            @foreach (var item in Model.CartDetails)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>
+                        @if (string.IsNullOrEmpty(item.Product.Photo))
+                        {
+                            <img src="@Html.DisplayFor(modelItem => item.Product.Photo)" width="100" />
+                        }
+                        else
+                        {
+                            <img src="@item.Product.Photo" style="width:50px;height:50px" />
+                        }
+                    </td>
+                    <td>@item.Product.Category.categoryName</td>
+                    <td>@item.Product.price X @item.Quantity</td>
+                    <td>@(item.Product.price * item.Quantity) Р</td>
+                    <td>
+                        <a class="btn btn-info" href="/Cart/AddItem?productID=@item.ProductID&&redirect=1">+</a>
+                        <a class="btn btn-info" href="/cart/removeitem?productID=@item.ProductID">-</a>
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <div class="my-2">
+            <h5>Итог: @(Model.CartDetails.Select(item => item.Product.price * item.Quantity).Sum())</h5>
+            
+        </div>
+
+        <div class="my-2">
+            @* <a class="btn btn-danger" asp-controller="Order" asp-action="Checkout">Оплатить</a>*@
+            <a class="btn btn-primary" href="/Cart/Checkout">Оплатить</a>
+        </div>
+
+    }
+    else
+    {
+        <h5>Корзина пуста</h5>
+    }
+</div>
+
