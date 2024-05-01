@@ -44,115 +44,38 @@
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.OrderDetail.DateTime)</th>
-                    <th>Билет Взрослый</th>
+                    <th>Билет Зрительский</th>
                     <th>Сумма</th>
                     <th>Билет Детский</th>
                     <th>Сумма</th>
-                    <th>Билет Зрительский</th>
+                    <th>Коньки Мужские</th>
                     <th>Сумма</th>
                     <th>Коньки женские</th>
                     <th>Сумма</th>
-                    <th>Коньки мужские</th>
+                    <th>Билет Взрослый </th>
                     <th>Сумма</th>
                     <th>Итог</th>
                 </tr>
             </thead>
 
             <tbody>
-
-
-                @foreach (var order in Model.OrderDetails)
-                {
-                    <tr>
-                        @if (order.DateTime == order.DateTime)
-                        {
+               
+                    @foreach (var order in Model.Shedules)
+                    {
+                        <tr>
                             <td>@order.DateTime</td>
                             @foreach (var item in Model.OrderDetails)
                             {
-                                <td> @item.Quantity</td>
-
-                                <td>@(item.UnitPrice * item.Quantity)</td>
-
-                            }
-                        }
-
-
-                    </tr>
-                    break;
-                }
-
-
-
-
-
-
-
-
-
-
-
-                @*foreach (var order in Model.Orders)
-            {
-            @if (order.OrderDetail != null)
-            {
-            <tr>
-            <td>@order.DateTime</td>
-
-            @foreach (var item in order.OrderDetail)
-            {
-            if ((!(item.Product.Name == "Взрослый")) && (!(item.Product.Name == "Детский")) && (!(item.Product.Name == "Зрительский")) && (!(item.Product.Name == "Женские")) && (!(item.Product.Name == "Мужские")))
-            {
-            continue;
-            }
-
-            if (item.Product.Name == "Взрослый")
-            {
-            <td>@item.Quantity</td>
-            <td> @(item.Product.price * item.Quantity)P</td>
-            }
-
-            if (item.Product.Name == "Детский")
-            {
-            <td>@item.Quantity</td>
-            <td> @(item.Product.price * item.Quantity)P</td>
-            }
-
-            else
-            if (item.Product.Name == "Зрительский")
-            {
-            <td>@item.Quantity</td>
-            <td> @(item.Product.price * item.Quantity)P</td>
-            }
-
-            else
-            if (item.Product.Name == "Женские")
-            {
-            <td>@item.Quantity</td>
-            <td> @(item.Product.price * item.Quantity)P</td>
-            }
-
-            else
-            if (item.Product.Name == "Мужские")
-            {
-            <td>@item.Quantity</td>
-            <td> @(item.Product.price * item.Quantity)P</td>
-            }
-
-            if (!((item.Product.Name == "Взрослый") && (item.Product.Name == "Детский") && (item.Product.Name == "Зрительский") && (item.Product.Name == "Женские") && (item.Product.Name == "Мужские")))
-            {
-            continue;
-            }
-            }
-
-
-            <td>@(order.OrderDetail.Select(item => item.Product.price * item.Quantity).Sum())P</td>
-            </tr>
-            }
-
-            }*@
-
+                                @if (order.DateTime == item.DateTime)
+                                {
+                                    <td> @item.Quantity</td>
+                                    <td>@(item.UnitPrice * item.Quantity)</td>
+                                }                                                 
+                            }                            
+                        <td>@(Model.OrderDetails.Where(i => order.DateTime == i.DateTime).Sum(i => i.Quantity * i.UnitPrice))</td>                      
+                        </tr>
+                    }      
             </tbody>
-
         </table>
     }
     else

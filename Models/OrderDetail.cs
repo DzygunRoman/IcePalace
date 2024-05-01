@@ -19,6 +19,8 @@ namespace AcePalace.Models
         [Display(Name = "Цена")]
         public int UnitPrice { get; set; }
 
+
+
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH}", ApplyFormatInEditMode = true)]
         [Display(Name = "Дата посещения")]

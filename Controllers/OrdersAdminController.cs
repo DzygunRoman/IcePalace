@@ -19,7 +19,7 @@ namespace AcePalace.Controllers
         {
             _context = context;
         }
-       
+
         // Дефолтное отображение
         public IActionResult Index()
         {
@@ -36,16 +36,17 @@ namespace AcePalace.Controllers
                                 ProductId = g.Key.ProductId,
                                 UnitPrice = g.Key.UnitPrice,
                                 Quantity = g.Sum(x => x.Quantity)
-                            }).OrderBy(x => x.DateTime)
-                            .ToList()
-
-            };     
+                            }).OrderBy(x => x.DateTime)                           
+                            .ToList(),
+                Shedules =  _context.Shedules.OrderBy(s => s.DateTime).ToList()
+               
+            };          
             return View(data);
         }
 
 
 
-       
+
 
 
 
