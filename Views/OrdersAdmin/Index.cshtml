@@ -56,6 +56,10 @@
 
 
         <p>Количество взрослых билетов : @(Model.OrderDetails.Where(i => ((ViewBag.StartTime == i.DateTime) && (i.ProductId == 1)) || ((ViewBag.StartTime <= i.DateTime) && (i.DateTime <= ViewBag.FinishTime) && (i.ProductId == 1))).Sum(i => i.Quantity)) шт</p>
+        <p>Количество детских билетов : @(Model.OrderDetails.Where(i => ((ViewBag.StartTime == i.DateTime) && (i.ProductId == 2)) || ((ViewBag.StartTime <= i.DateTime) && (i.DateTime <= ViewBag.FinishTime) && (i.ProductId == 2))).Sum(i => i.Quantity)) шт</p>
+        <p>Количество зрительских билетов : @(Model.OrderDetails.Where(i => ((ViewBag.StartTime == i.DateTime) && (i.ProductId == 3)) || ((ViewBag.StartTime <= i.DateTime) && (i.DateTime <= ViewBag.FinishTime) && (i.ProductId == 3))).Sum(i => i.Quantity)) шт</p>
+        <p>Количество мужских коньков : @(Model.OrderDetails.Where(i => ((ViewBag.StartTime == i.DateTime) && (i.ProductId == 4)) || ((ViewBag.StartTime <= i.DateTime) && (i.DateTime <= ViewBag.FinishTime) && (i.ProductId == 4))).Sum(i => i.Quantity)) шт</p>
+        <p>Количество женских коньков : @(Model.OrderDetails.Where(i => ((ViewBag.StartTime == i.DateTime) && (i.ProductId == 5)) || ((ViewBag.StartTime <= i.DateTime) && (i.DateTime <= ViewBag.FinishTime) && (i.ProductId == 5))).Sum(i => i.Quantity)) шт</p>
         <p> Сумма за выбранный период : @(Model.OrderDetails.Where(i => (ViewBag.StartTime == i.DateTime) || (ViewBag.StartTime <= i.DateTime) && (i.DateTime <= ViewBag.FinishTime)).Sum(i => i.Quantity * i.UnitPrice))Р</p>
         
     }

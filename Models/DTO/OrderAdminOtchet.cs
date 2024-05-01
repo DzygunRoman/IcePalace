@@ -13,10 +13,12 @@ namespace AcePalace.Models.DTO
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Начальная дата")]
         public DateTime startTime { get; set; }
 
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Конечная дата")]
         public DateTime finishTime { get; set; }
         
     }
