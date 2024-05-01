@@ -4,38 +4,6 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@*<table class="table">
-    <thead>
-    <th>
-            @Html.DisplayNameFor(model => model.Order.DateTime)
-    </th>
-
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Orders)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateTime, "{0:dd/MM/yyyy}")
-                </td>
-
-
-            </tr>
-        }
-    </tbody>
-</table>*@
-
-
-
-
-
-
-
-
-
-
-
 <div style="width:100%" class="mt-2">
     <h1>Все заказы</h1>
     @if (Model != null)
@@ -57,10 +25,12 @@
                     <th>Итог</th>
                 </tr>
             </thead>
-
-            <tbody>
-               
-                    @foreach (var order in Model.Shedules)
+            
+            <tbody> 
+                
+                @foreach (var order in Model.Shedules)
+                {
+                    @if ((ViewBag.StartTime == order.DateTime) || ( (ViewBag.StartTime <= order.DateTime )&&(order.DateTime <= ViewBag.FinishTime)))
                     {
                         <tr>
                             <td>@order.DateTime</td>
@@ -70,11 +40,17 @@
                                 {
                                     <td> @item.Quantity</td>
                                     <td>@(item.UnitPrice * item.Quantity)</td>
-                                }                                                 
-                            }                            
-                        <td>@(Model.OrderDetails.Where(i => order.DateTime == i.DateTime).Sum(i => i.Quantity * i.UnitPrice))</td>                      
+                                }
+                            }
+                            <td>@(Model.OrderDetails.Where(i => order.DateTime == i.DateTime).Sum(i => i.Quantity * i.UnitPrice))</td>
+
                         </tr>
-                    }      
+                    
+                    }                    
+                }
+               
+            <td> Сумма за выбранный период : @(Model.OrderDetails.Where(i => (ViewBag.StartTime == i.DateTime) || (ViewBag.StartTime <= i.DateTime)&&(i.DateTime <= ViewBag.FinishTime)).Sum(i => i.Quantity * i.UnitPrice))Р</td>
+            
             </tbody>
         </table>
     }
@@ -83,23 +59,22 @@
         <h5>Нет заказов</h5>
     }
 </div>
-@*<div class="row">
+<div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-
-
-
             <div class="form-group">
-                <label asp-for="DateTime" class="control-label"></label>
-                <input asp-for="DateTime" class="form-control" />
-                <span asp-validation-for="DateTime" class="text-danger"></span>
+                <label asp-for="startTime" class="control-label"></label>
+                <input asp-for="startTime" class="form-control" />
+                <span asp-validation-for="startTime" class="text-danger"></span>
+                <label asp-for="finishTime" class="control-label"></label>
+                <input asp-for="finishTime" class="form-control" />
+                <span asp-validation-for="finishTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Показать" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>*@
+</div>
 

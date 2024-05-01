@@ -21,7 +21,7 @@ namespace AcePalace.Controllers
         }
 
         // Дефолтное отображение
-        public IActionResult Index()
+        public IActionResult Index(DateTime startTime,DateTime finishTime, OrderAdminOtchet otchet)
         {
             var data = new OrderAdminOtchet
             {
@@ -40,11 +40,18 @@ namespace AcePalace.Controllers
                             .ToList(),
                 Shedules =  _context.Shedules.OrderBy(s => s.DateTime).ToList()
                
-            };          
+            };
+            otchet.startTime = startTime;
+            ViewBag.StartTime = startTime; ViewBag.FinishTime = finishTime;
+            otchet.finishTime = finishTime;
+         
             return View(data);
         }
 
-
+       // [HttpPost]
+       // [ValidateAntiForgeryToken]
+      
+        
 
 
 
