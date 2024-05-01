@@ -49,10 +49,15 @@
                     }                    
                 }
                
-            <td> Сумма за выбранный период : @(Model.OrderDetails.Where(i => (ViewBag.StartTime == i.DateTime) || (ViewBag.StartTime <= i.DateTime)&&(i.DateTime <= ViewBag.FinishTime)).Sum(i => i.Quantity * i.UnitPrice))Р</td>
+            
             
             </tbody>
         </table>
+
+
+        <p>Количество взрослых билетов : @(Model.OrderDetails.Where(i => ((ViewBag.StartTime == i.DateTime) && (i.ProductId == 1)) || ((ViewBag.StartTime <= i.DateTime) && (i.DateTime <= ViewBag.FinishTime) && (i.ProductId == 1))).Sum(i => i.Quantity)) шт</p>
+        <p> Сумма за выбранный период : @(Model.OrderDetails.Where(i => (ViewBag.StartTime == i.DateTime) || (ViewBag.StartTime <= i.DateTime) && (i.DateTime <= ViewBag.FinishTime)).Sum(i => i.Quantity * i.UnitPrice))Р</p>
+        
     }
     else
     {
