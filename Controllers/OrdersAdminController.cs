@@ -8,20 +8,42 @@ using Microsoft.EntityFrameworkCore;
 using AcePalace.Areas.Identity.Data;
 using AcePalace.Models;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+using System.IO;
+using System.Text;
+
+using iText.IO.Source;
+using iText.Kernel.Geom;
+using iText.Html2pdf;
+using iText.Kernel.Pdf;
+using iText.IO.Font;
+using iText.Layout.Font;
+using Org.BouncyCastle.Crypto.Engines;
+using NuGet.Configuration;
+using iText.Layout;
+using iText.Kernel.Font;
+using iText.IO.Font.Constants;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using iText.Forms.Form.Element;
 
 namespace AcePalace.Controllers
 {
     public class OrdersAdminController : Controller
     {
         private readonly AcePalaceContext _context;
-
-        public OrdersAdminController(AcePalaceContext context)
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _hostingEnvironment;
+        public OrdersAdminController(AcePalaceContext context, Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
         {
             _context = context;
+            _hostingEnvironment = hostingEnvironment;            
         }
-
-        // Дефолтное отображение
-        public IActionResult Index(DateTime startTime,DateTime finishTime, OrderAdminOtchet otchet)
+        public IActionResult Index()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(DateTime startTime,DateTime finishTime, OrderAdminOtchet otchet)
         {
             var data = new OrderAdminOtchet
             {
@@ -38,160 +60,44 @@ namespace AcePalace.Controllers
                                 Quantity = g.Sum(x => x.Quantity)
                             }).OrderBy(x => x.DateTime)                           
                             .ToList(),
-                Shedules =  _context.Shedules.OrderBy(s => s.DateTime).ToList()
-               
+                Shedules =  _context.Shedules.OrderBy(s => s.DateTime).ToList()               
             };
             otchet.startTime = startTime;
             ViewBag.StartTime = startTime; ViewBag.FinishTime = finishTime;
             otchet.finishTime = finishTime;
-         
+            
             return View(data);
         }
-
-       // [HttpPost]
-       // [ValidateAntiForgeryToken]
-      
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // GET: OrdersAdmin/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Order
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
-        }
-
-        // GET: OrdersAdmin/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: OrdersAdmin/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,CreateDate,IsDeleted,Email,DateTime")] Order order)
+        public FileResult Export(string GridHtml)
         {
-            if (ModelState.IsValid)
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(GridHtml)))
             {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(order);
+               
+                WriterProperties writerProperties = new WriterProperties();
+                writerProperties.AddXmpMetadata();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                PdfWriter writer = new PdfWriter(byteArrayOutputStream);
+                PdfDocument pdfDocument = new PdfDocument(writer);
+                pdfDocument.GetCatalog().SetLang(new PdfString("ru-RU"));
+                pdfDocument.SetTagged();
+                pdfDocument.GetCatalog().SetViewerPreferences(new PdfViewerPreferences().SetDisplayDocTitle(true));
+                pdfDocument.SetDefaultPageSize(PageSize.A3);
+                ConverterProperties props = new ConverterProperties();
+                FontProvider fontProvider = new FontProvider();
+                fontProvider.AddFont("C:\\Windows\\Fonts\\Arial.ttf", PdfEncodings.IDENTITY_H);
+                props.SetFontProvider(fontProvider);                
+                HtmlConverter.ConvertToPdf(stream, pdfDocument,props);
+                pdfDocument.Close();
+                return File(byteArrayOutputStream.ToArray(), "application/pdf", "Grid.pdf");
+            }           
         }
-
-        // GET: OrdersAdmin/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Order.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            return View(order);
-        }
-
-        // POST: OrdersAdmin/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,CreateDate,IsDeleted,Email,DateTime")] Order order)
+        public FileResult ExportXl(string GridHtml)
         {
-            if (id != order.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(order);
-        }
-
-        // GET: OrdersAdmin/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _context.Order
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
-        }
-
-        // POST: OrdersAdmin/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var order = await _context.Order.FindAsync(id);
-            if (order != null)
-            {
-                _context.Order.Remove(order);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool OrderExists(int id)
-        {
-            return _context.Order.Any(e => e.Id == id);
+            return File(Encoding.UTF8.GetBytes(GridHtml), "application/vnd.ms-excel", "Grid.xls");
         }
     }
 }
